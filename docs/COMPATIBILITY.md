@@ -1,0 +1,13 @@
+# Compatibility changes
+
+| Area | What Phase 1 exports | Why |
+|---|---|---|
+| Product identity | `0001-defer-build-only-msix-module.patch` loads the upstream MSIX ESM module only for an explicit build-channel request. | Ordinary launches do not use that build-only path. Older CommonJS loaders otherwise fail eagerly with `ERR_REQUIRE_ESM`. Real channel requests still use upstream validation and a modern build Node. This replaces, rather than republishes, the prototype's copied CommonJS shim. |
+| Desktop manifest | Keeps the upstream Desktop `package.json`; the launcher checks its main entry. | The prototype's temporary eight-line manifest made a precompiled workspace launchable but removed the upstream build scripts and dependency declarations. It is not an upstream patch. |
+| Renderer | Launcher rejects a `webapp` receipt and requires the Desktop main and both preloads. | The observed prototype used a Webapp renderer with native main/preloads. This is not a clean build or proof of native feature parity. The receipt check is a sanity gate, not cryptographic provenance. |
+| Graphics | Launches test instances with `--disable-gpu`. | Matches the observed launch option and establishes a baseline; it does not prove acceleration is broken or that software rendering fixes a particular fault. No sandbox or certificate switches are disabled. |
+| State and backend | Creates fresh test state, clears inherited environment, and selects fake boot. | Supports smoke testing without importing live configuration. The export does not include the state, does not configure a real backend, and does not change OS permissions. Use an offline disposable environment for Desktop tests. |
+| Dependencies | Records Electron 32.3.3, node-pty 1.1.0, get-windows 9.3.0 and historical npm lockfiles. | Preserves version, registry and integrity metadata without shipping installed code. Removed optional funding/deprecation text and unused npm-init fields. Historical dependencies are not a security baseline. |
+| Harness | Provides an offline static Electron window and controlled-launch tests. | Replaces prototype harnesses that assumed a fixed loopback backend or accepted a clipboard sign-in link. No sign-in helper, backend address, tokens or application profiles are exported. |
+
+No updater bypass, native binary patch, production bundle-ID change, backend patch, or OS security changes are included. Packaging, renderer/API compatibility, real gateway/auth flows, signed native helper tests, and runtime security remain open.

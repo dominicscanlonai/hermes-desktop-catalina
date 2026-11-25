@@ -15,3 +15,22 @@ hermes-home/
 *.dmg
 *.tar.gz
 .DS_Store
+
+# Catalina source export safeguards
+.env*
+.npmrc
+*.p12
+*.sqlite*
+*.db*
+*.asar
+*.zip
+*.tar*
+__pycache__/
+.venv/
+.cache/
+Cache/
+build/
+dist/
+profiles/
+*-state/
+upstream/
