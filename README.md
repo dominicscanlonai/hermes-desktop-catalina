@@ -26,7 +26,7 @@
 </p>
 
 > [!IMPORTANT]
-> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This GitHub repository currently contains project documentation, not the complete tested source port, a standalone `.app`, or an installer. The source transfer, build automation, comprehensive feature validation and security review are still in progress.
+> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This repository includes the reviewed source integration: a compatibility patch, isolated launcher, dependency records and sanitised evidence. It does not include a complete tested Desktop build, standalone `.app` or installer. Electron 32 is end-of-support and is not suitable for general distribution.
 
 ## Overview
 
@@ -47,15 +47,15 @@
 | Component | Observed development baseline |
 |---|---|
 | Host OS | macOS Catalina 10.15.8, Intel x86_64 |
-| Upstream Hermes source | v0.23.4 checkout |
+| Upstream Hermes source | v0.23.4 ([pinned commit](manifests/upstream.json)) |
 | Desktop test host | Electron 32.3.3, Chromium 128, Node 20.18.1 |
 | Renderer / desktop bundling host | Ubuntu VM, Node 26.12.1, pnpm 12.15.0 |
 | Native desktop window | ✅ Launched on Catalina |
 | Hermes backend | ✅ Connected in tested session |
 | AI chat | ✅ Basic `hello` / response smoke test |
 | Conversation history | ✅ Visible in tested session |
-| Terminal PTY | ✅ Standalone native module smoke test |
-| Window inspection helper | ✅ Standalone native module smoke test |
+| Terminal PTY | 🧪 Host Node import verified; packaged Electron test pending |
+| Window inspection helper | 🧪 Host Node import verified; packaged Electron test pending |
 | Full application test suite | ⏳ Not completed |
 | Standalone distributable `.app` | ⏳ Not packaged |
 | Security and dependency review | ⚠️ Outstanding |
@@ -76,16 +76,16 @@ curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 
 ### Option B: Help build the Catalina port
 
-The compatibility source, launcher and test harness are being audited for publication. Until those files have been uploaded and verified, there is **no supported one-command Catalina installation**.
+The reviewed source and isolated smoke/fake-boot harness are available. There is **no supported one-command Catalina installation**.
 
-You can clone the project documentation:
+Clone the source and documentation:
 
 ```bash
 git clone https://github.com/dominicscanlonai/hermes-desktop-catalina.git
 cd hermes-desktop-catalina
 ```
 
-Read the [build plan](docs/BUILDING.md), [compatibility notes](COMPATIBILITY.md) and [roadmap](docs/ROADMAP.md). A reproducible build command will be documented only after it has been implemented and tested.
+Read the [build plan](docs/BUILDING.md), [compatibility notes](COMPATIBILITY.md) and [roadmap](docs/ROADMAP.md). See the [source build and isolated launch guide](docs/BUILD.md) for the unverified build procedure and verified offline checks.
 
 ## Feature status
 
@@ -93,7 +93,7 @@ The feature set below is **inherited from Hermes Agent**, not a claim that each 
 
 | Desktop capability | Catalina status |
 |---|---|
-| Official desktop UI and navigation | ✅ Smoke-tested |
+| Desktop UI and navigation | 🧪 Prototype smoke-tested with a Webapp-derived renderer; Desktop renderer parity pending |
 | Model selection and provider connection | ✅ Tested with one configured provider |
 | Interactive AI conversation | ✅ Basic response confirmed |
 | Session history | ✅ Rendered |
@@ -115,7 +115,7 @@ Official Nous Research Hermes source
                 |
                 +-- Linux build host (modern Node + pnpm)
                 |         |
-                |         +-- Official React/Vite renderer
+                |         +-- Upstream React/Vite Webapp renderer (prototype)
                 |         +-- Bundled Electron main / preload
                 |
                 +-- Catalina-compatible Electron runtime
@@ -143,11 +143,12 @@ hermes-desktop-catalina/
     ├── BUILDING.md           # Build process and prerequisites
     └── ROADMAP.md            # Prioritised engineering milestones
 
-# Planned after source audit:
-# patches/                    # Minimal compatibility changes
-# scripts/                    # Reproducible build and packaging
-# tests/                      # Automated and manual smoke tests
-# .github/workflows/          # CI, once safe and testable
+# Reviewed source additions:
+# patches/                    # Minimal compatibility patch
+# scripts/                    # Isolated smoke and fake-boot launchers
+# tests/                      # Offline verification
+# manifests/                  # Pinned provenance and dependency records
+# INVENTORY.md                # Source integration allowlist
 ```
 
 ## Documentation
@@ -156,6 +157,9 @@ hermes-desktop-catalina/
 |---|---|
 | [Compatibility matrix](COMPATIBILITY.md) | Verified results versus untested features |
 | [Build and development](docs/BUILDING.md) | Environment, upstream source and pending build automation |
+| [Source build and launch](docs/BUILD.md) | Disposable build recipe and test launcher |
+| [Compatibility changes](docs/COMPATIBILITY.md) | Patch rationale and omitted prototype shortcuts |
+| [Test evidence](docs/TEST-EVIDENCE.md) | Sanitised results and verification limits |
 | [Security](SECURITY.md) | Runtime risks, secrets handling and distribution limitations |
 | [Roadmap](docs/ROADMAP.md) | Development priorities |
 | [Upstream Hermes documentation](https://hermes-agent.nousresearch.com/docs/) | Official Hermes feature reference |
@@ -169,7 +173,7 @@ For the current development baseline, see the [roadmap](docs/ROADMAP.md). Contri
 
 ## Credits and license
 
-Hermes Agent and the original desktop interface are by **[Nous Research](https://nousresearch.com)**. Their upstream repository lists the **MIT license**: [NousResearch/hermes-agent/LICENSE](https://github.com/NousResearch/hermes-agent/blob/main/LICENSE).
+Hermes Agent and the original desktop interface are by **[Nous Research](https://nousresearch.com)**. Their upstream repository uses the **MIT license**, included here as [LICENSE](LICENSE) from the [pinned upstream commit](manifests/upstream.json).
 
 This compatibility project is independently maintained, **not an official Nous Research release or endorsement**. The upstream banner is linked for attribution, not copied into this repository. Before redistributing upstream code or binaries, preserve the applicable upstream license and attribution notices, and verify third-party dependency licenses.
 

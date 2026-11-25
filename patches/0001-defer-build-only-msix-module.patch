@@ -1,0 +1,17 @@
+diff --git a/apps/desktop/product-identity.cjs b/apps/desktop/product-identity.cjs
+--- a/apps/desktop/product-identity.cjs
++++ b/apps/desktop/product-identity.cjs
+@@ -96,8 +96,11 @@
+     : {})
+ }
+ 
+-const { channelBuildRequest } = require('../../scripts/msix-shared.mjs')
+-const request = channelBuildRequest()
++// The Catalina runtime cannot load ESM via require(). Ordinary launches have
++// no build-channel request and do not need this build-only module.
++const request = process.env._HERMES_CHANNEL_REQUEST_JSON
++  ? require('../../scripts/msix-shared.mjs').channelBuildRequest()
++  : null
+ 
+ // A channel created with --branding stable copies stable's identity, so it IS
+ // the regular app. It must also run like one: a token would make the runtime

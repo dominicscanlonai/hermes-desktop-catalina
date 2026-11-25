@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/NousResearch/hermes-agent.git",
+  "tag": "v0.23.4",
+  "commit": "8fc0374447313e276f6b9a2764bfc750190c966a",
+  "license": "MIT",
+  "target": { "platform": "darwin", "arch": "x64", "minimumMacOS": "10.15" },
+  "upstreamBuildRequirements": { "nodeMajor": 26, "electron": "44.10.2" },
+  "prototypeRuntime": { "electron": "32.3.3", "node": "20.18.1", "chromium": "128.0.6613.186" },
+  "observedArtifactDigests": {
+    "scope": "Locally observed only; these are not upstream signatures or download instructions. No archives are included.",
+    "nativeArchiveSha256": "0503e8304b7f8cc340b1a8428ccd16383ab89329313d83e199374f522b0da47a",
+    "webappRendererArchiveSha256": "46e4c353cf83cb8b08bceeb3f7af9e567349fde2bb8e0feaab236498b2cb3fef"
+  }
+}

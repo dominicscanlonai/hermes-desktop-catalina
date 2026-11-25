@@ -1,0 +1,9 @@
+{
+  "name": "runtime",
+  "version": "1.0.0",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "32.3.3"
+  },
+  "private": true
+}
