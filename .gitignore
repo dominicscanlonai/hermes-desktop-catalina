@@ -1,0 +1,17 @@
+node_modules/
+Build/
+runtime/
+official-source/
+.hermes/
+hermes-home/
+.env
+.env.*
+*.db
+*.db-*
+*.log
+*.pem
+*.key
+*.app/
+*.dmg
+*.tar.gz
+.DS_Store
