@@ -21,12 +21,13 @@
   <a href="#compatibility-at-a-glance">Compatibility</a> ·
   <a href="#getting-started">Getting started</a> ·
   <a href="#feature-status">Feature status</a> ·
+  <a href="#agent-collective-multi-agent-engineering">Agent Collective</a> ·
   <a href="#project-layout">Source layout</a> ·
   <a href="#documentation">Documentation</a>
 </p>
 
 > [!IMPORTANT]
-> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This GitHub repository currently contains project documentation, not the complete tested source port, a standalone `.app`, or an installer. The source transfer, build automation, comprehensive feature validation and security review are still in progress.
+> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This GitHub repository currently contains project documentation, not the complete tested source port, a standalone `.app`, or an installer. Reviewed compatibility source and Sprint 001 preflight changes are now available for review in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4). Genuine Desktop compilation, comprehensive feature validation and security review remain in progress.
 
 ## Overview
 
@@ -56,6 +57,7 @@
 | Conversation history | ✅ Visible in tested session |
 | Terminal PTY | ✅ Standalone native module smoke test |
 | Window inspection helper | ✅ Standalone native module smoke test |
+| Offline source regressions | ✅ 20 Python tests reported passing in Sprint 001; see PR #4 |
 | Full application test suite | ⏳ Not completed |
 | Standalone distributable `.app` | ⏳ Not packaged |
 | Security and dependency review | ⚠️ Outstanding |
@@ -76,7 +78,7 @@ curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 
 ### Option B: Help build the Catalina port
 
-The compatibility source, launcher and test harness are being audited for publication. Until those files have been uploaded and verified, there is **no supported one-command Catalina installation**.
+The compatibility source, launcher and test harness are available for review on the [source integration branch](https://github.com/dominicscanlonai/hermes-desktop-catalina/tree/feature/catalina-source-integration). There is **no supported one-command Catalina installation**.
 
 You can clone the project documentation:
 
@@ -93,20 +95,46 @@ The feature set below is **inherited from Hermes Agent**, not a claim that each 
 
 | Desktop capability | Catalina status |
 |---|---|
-| Official desktop UI and navigation | ✅ Smoke-tested |
+| Desktop UI and navigation | 🧪 Prototype smoke-tested with a Webapp-derived renderer; Desktop renderer parity pending |
 | Model selection and provider connection | ✅ Tested with one configured provider |
 | Interactive AI conversation | ✅ Basic response confirmed |
 | Session history | ✅ Rendered |
 | Terminal-backed tools | 🧪 Native PTY separately tested; end-to-end testing pending |
-| Skills and capabilities | 🧪 Interface present; workflows pending |
-| Artifacts and files | 🧪 Interface present; workflows pending |
+| Skills and capabilities | ✅ Skills and local engineering tools exercised; broader coverage pending |
+| Artifacts and files | ✅ Local project file creation and editing exercised; native attachment and preview workflows pending |
 | Scheduled jobs | 🧪 Interface present; execution pending |
 | MCP integrations | ⏳ Pending |
-| Subagents, memory and advanced automation | ⏳ Pending |
+| Native subagent delegation | ✅ Two specialist workers dispatched in parallel and completed tasks |
+| Shared project memory | ✅ Obsidian Markdown vault and manual private Git sync established; reverse-direction sync test pending |
+| Multi-agent engineering | ✅ Implementation, independent review and integration completed in Sprint 001 |
+| Advanced automation | 🧪 Multi-stage sprint exercised with manual continuation; unattended orchestration and scheduled jobs pending |
 | Update and migration flows | ⏳ Pending; do not use upstream auto-update on the experimental port |
 | Installer, signing and notarisation | ⏳ Pending |
 
 Upstream feature documentation: [CLI](https://hermes-agent.nousresearch.com/docs/user-guide/cli) · [Tools](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools) · [Skills](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) · [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory) · [MCP](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp).
+
+## Agent Collective: multi-agent engineering
+
+The Catalina prototype is being used to develop its own compatibility port. During Sprint 001, Hermes delegated work to two native subagents in parallel, with independent task contexts.
+
+| Agent | Responsibility | Sprint 001 result |
+|---|---|---|
+| **Hermes Prime** | Coordination, integration and documentation | Integrated fixes and submitted reviewed source |
+| **Forge** | Build engineering and implementation | Implemented pinned-toolchain and Desktop receipt preflight |
+| **Sentinel** | Independent QA and security review | Identified two Git index edge cases and verified acceptance gates |
+
+ChatGPT assists with project strategy, documentation and repository review. Obsidian provides a shared Markdown knowledge base, synchronised manually through a separate private Git repository. Both Hermes and ChatGPT have demonstrated read access to the shared bootstrap notes; reverse-direction write/pull verification and publication of the 15 engineering notes remain pending. This is file-based project knowledge, not synchronisation of internal model memory.
+
+### Development checkpoint: 25 November 2026
+
+- ✅ Two native subagents dispatched in parallel and completed their assignments.
+- ✅ Shared Obsidian vault and private Git synchronisation established.
+- ✅ Sprint 001 reported 20 passing Python tests, launcher regression, patch applicability and syntax checks.
+- ✅ Source integration and build preflight submitted in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4).
+- 🧪 Genuine Desktop renderer compilation and offline Catalina GUI acceptance are the next milestones.
+- ⚠️ Electron 32 end-of-support remains a blocker for general binary distribution.
+
+These are development-session results, not a certification of every feature in a standalone packaged application.
 
 ## How the port works
 
@@ -115,7 +143,7 @@ Official Nous Research Hermes source
                 |
                 +-- Linux build host (modern Node + pnpm)
                 |         |
-                |         +-- Official React/Vite renderer
+                |         +-- Upstream React/Vite Webapp renderer (prototype)
                 |         +-- Bundled Electron main / preload
                 |
                 +-- Catalina-compatible Electron runtime
@@ -143,7 +171,7 @@ hermes-desktop-catalina/
     ├── BUILDING.md           # Build process and prerequisites
     └── ROADMAP.md            # Prioritised engineering milestones
 
-# Planned after source audit:
+# Submitted for review in PR #4 (not yet on main):
 # patches/                    # Minimal compatibility changes
 # scripts/                    # Reproducible build and packaging
 # tests/                      # Automated and manual smoke tests
