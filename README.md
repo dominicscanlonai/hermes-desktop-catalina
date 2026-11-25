@@ -21,6 +21,7 @@
   <a href="#compatibility-at-a-glance">Compatibility</a> ·
   <a href="#getting-started">Getting started</a> ·
   <a href="#feature-status">Feature status</a> ·
+  <a href="#agent-collective-multi-agent-engineering">Agent Collective</a> ·
   <a href="#project-layout">Source layout</a> ·
   <a href="#documentation">Documentation</a>
 </p>
@@ -56,6 +57,7 @@
 | Conversation history | ✅ Visible in tested session |
 | Terminal PTY | 🧪 Host Node import verified; packaged Electron test pending |
 | Window inspection helper | 🧪 Host Node import verified; packaged Electron test pending |
+| Offline source regressions | ✅ 20 Python tests reported passing in Sprint 001; see PR #4 |
 | Full application test suite | ⏳ Not completed |
 | Standalone distributable `.app` | ⏳ Not packaged |
 | Security and dependency review | ⚠️ Outstanding |
@@ -98,15 +100,41 @@ The feature set below is **inherited from Hermes Agent**, not a claim that each 
 | Interactive AI conversation | ✅ Basic response confirmed |
 | Session history | ✅ Rendered |
 | Terminal-backed tools | 🧪 Native PTY separately tested; end-to-end testing pending |
-| Skills and capabilities | 🧪 Interface present; workflows pending |
-| Artifacts and files | 🧪 Interface present; workflows pending |
+| Skills and capabilities | ✅ Skills and local engineering tools exercised; broader coverage pending |
+| Artifacts and files | ✅ Local project file creation and editing exercised; native attachment and preview workflows pending |
 | Scheduled jobs | 🧪 Interface present; execution pending |
 | MCP integrations | ⏳ Pending |
-| Subagents, memory and advanced automation | ⏳ Pending |
+| Native subagent delegation | ✅ Two specialist workers dispatched in parallel and completed tasks |
+| Shared project memory | ✅ Obsidian Markdown vault and manual private Git sync established; reverse-direction sync test pending |
+| Multi-agent engineering | ✅ Implementation, independent review and integration completed in Sprint 001 |
+| Advanced automation | 🧪 Multi-stage sprint exercised with manual continuation; unattended orchestration and scheduled jobs pending |
 | Update and migration flows | ⏳ Pending; do not use upstream auto-update on the experimental port |
 | Installer, signing and notarisation | ⏳ Pending |
 
 Upstream feature documentation: [CLI](https://hermes-agent.nousresearch.com/docs/user-guide/cli) · [Tools](https://hermes-agent.nousresearch.com/docs/user-guide/features/tools) · [Skills](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills) · [Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory) · [MCP](https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp).
+
+## Agent Collective: multi-agent engineering
+
+The Catalina prototype is being used to develop its own compatibility port. During Sprint 001, Hermes delegated work to two native subagents in parallel, with independent task contexts.
+
+| Agent | Responsibility | Sprint 001 result |
+|---|---|---|
+| **Hermes Prime** | Coordination, integration and documentation | Integrated fixes and submitted reviewed source |
+| **Forge** | Build engineering and implementation | Implemented pinned-toolchain and Desktop receipt preflight |
+| **Sentinel** | Independent QA and security review | Identified two Git index edge cases and verified acceptance gates |
+
+ChatGPT assists with project strategy, documentation and repository review. Obsidian provides a shared Markdown knowledge base, synchronised manually through a separate private Git repository. Both Hermes and ChatGPT have demonstrated read access to the shared bootstrap notes; reverse-direction write/pull verification and publication of the 15 engineering notes remain pending. This is file-based project knowledge, not synchronisation of internal model memory.
+
+### Development checkpoint: 25 November 2026
+
+- ✅ Two native subagents dispatched in parallel and completed their assignments.
+- ✅ Shared Obsidian vault and private Git synchronisation established.
+- ✅ Sprint 001 reported 20 passing Python tests, launcher regression, patch applicability and syntax checks.
+- ✅ Source integration and build preflight submitted in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4).
+- 🧪 Genuine Desktop renderer compilation and offline Catalina GUI acceptance are the next milestones.
+- ⚠️ Electron 32 end-of-support remains a blocker for general binary distribution.
+
+These are development-session results, not a certification of every feature in a standalone packaged application.
 
 ## How the port works
 
@@ -145,8 +173,8 @@ hermes-desktop-catalina/
 
 # Reviewed source additions:
 # patches/                    # Minimal compatibility patch
-# scripts/                    # Isolated smoke and fake-boot launchers
-# tests/                      # Offline verification
+# scripts/                    # Offline preflight and isolated launchers
+# tests/                      # Offline verification and preflight regression tests
 # manifests/                  # Pinned provenance and dependency records
 # INVENTORY.md                # Source integration allowlist
 ```
@@ -160,6 +188,7 @@ hermes-desktop-catalina/
 | [Source build and launch](docs/BUILD.md) | Disposable build recipe and test launcher |
 | [Compatibility changes](docs/COMPATIBILITY.md) | Patch rationale and omitted prototype shortcuts |
 | [Test evidence](docs/TEST-EVIDENCE.md) | Sanitised results and verification limits |
+| [Catalina acceptance](docs/CATALINA-ACCEPTANCE.md) | Independent offline GUI and native acceptance gates |
 | [Security](SECURITY.md) | Runtime risks, secrets handling and distribution limitations |
 | [Roadmap](docs/ROADMAP.md) | Development priorities |
 | [Upstream Hermes documentation](https://hermes-agent.nousresearch.com/docs/) | Official Hermes feature reference |
