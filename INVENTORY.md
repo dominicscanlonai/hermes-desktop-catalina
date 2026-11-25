@@ -1,6 +1,6 @@
 # Publication inventory
 
-Exactly these text files belong in this export:
+These are the reviewed source export and Sprint 001 additions. Existing repository documentation is separate.
 
 | Path | Contents |
 |---|---|
@@ -19,6 +19,9 @@ Exactly these text files belong in this export:
 | `patches/0001-defer-build-only-msix-module.patch` | Minimal legacy-loader compatibility patch. |
 | `scripts/launch.sh` | Isolated smoke/fake-boot launcher with fresh-state and Desktop receipt checks. |
 | `scripts/runtime-smoke.cjs` | Static, sandboxed Electron window fixture. |
+| `scripts/preflight.py` | Offline source/toolchain and Desktop receipt preflight. |
+| `tests/test_preflight.py` | Offline preflight unit and CLI fixtures. |
+| `docs/CATALINA-ACCEPTANCE.md` | Native, packaging, performance and publication gates. |
 | `tests/verify-identity.cjs` | Loader and identity regression checks. |
 | `tests/verify-launch.sh` | Launch-contract tests using a temporary stub executable. |
 

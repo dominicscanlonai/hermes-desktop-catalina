@@ -11,13 +11,10 @@ case $mode in
   smoke) [[ $# == 3 ]] || fail 'Smoke mode does not take an app directory'; app=$root/scripts/runtime-smoke.cjs ;;
   desktop)
     [[ $# == 4 ]] || fail 'Desktop mode needs a prepared app directory'
-    app=$(cd "$4" && pwd -P)
-    for name in package.json dist/hermes-build.json dist/electron-main.mjs dist/electron-preload.js dist/preview-guest-preload.js dist/index.html; do
-      [[ -f $app/$name && ! -L $app/$name ]] || fail "Missing or linked Desktop input: $name"
-    done
-    grep -Eq '"product"[[:space:]]*:[[:space:]]*"desktop"' "$app/dist/hermes-build.json" || fail 'Expected Desktop renderer receipt, not Webapp output'
-    grep -Eq '"main"[[:space:]]*:[[:space:]]*"dist/electron-main.mjs"' "$app/package.json" || fail 'Unexpected app entry point'
-    [[ ! -L $app/dist && ! -L $app/dist/node_modules ]] || fail 'Linked Desktop dist or node_modules is not supported'
+    [[ ! -L $4 && ! -L ${4%/} ]] || fail 'Linked Desktop app root is not supported'
+    app=$4
+    python3 -I -B "$root/scripts/preflight.py" --desktop-only --prepared-desktop "$app" >/dev/null
+    app=$(cd "$app" && pwd -P)
     ;;
   *) fail 'Choose smoke or desktop' ;;
 esac

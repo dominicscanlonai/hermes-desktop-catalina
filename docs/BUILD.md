@@ -2,9 +2,22 @@
 
 Phase 1 is a source export and an isolated launch harness. It does not claim a reproducible Catalina Desktop build yet. Use a new work area outside this export and outside any existing Hermes installation. Commands below are for a later build, not a request to run them against the live prototype.
 
+## Offline preflight
+
+The checks require Python 3.8+ on macOS or Linux and trusted local tools on `PATH`. Run the upstream and toolchain check **before** applying patches in a disposable checkout:
+
+```sh
+python3 -I -B scripts/preflight.py --upstream /path/to/clean/pinned/upstream
+python3 -B -m unittest discover -s tests -p test_preflight.py
+```
+
+The checker requires exact Node `26.12.1`, pnpm `12.15.0`, and a clean checkout whose HEAD and tag match the pin. It rejects `assume-unchanged` and `skip-worktree` index entries, which can hide modifications from `git status`. Use a fresh, full checkout with no ignored build inputs; this check is not a file-by-file provenance attestation. The local Catalina shell had Node `20.20.1` and pnpm `10.34.9`, so no full build was attempted. It does not fetch or install anything; it is not a network sandbox.
+
+For a prepared app directory, `python3 -I -B scripts/preflight.py --desktop-only --prepared-desktop /path/to/apps/desktop` parses both manifests, checks six nonempty regular files, rejects the stale marker and linked native staging, and prints SHA-256 hashes. The Desktop launcher uses this gate before creating state. These hashes are an inventory, **not** an upstream output freshness check, native integrity check, or proof of origin. On the producer, verify `productCurrent` in the pinned upstream `scripts/build/freshness.mjs` against the expected producer and prepared inputs; also independently attest native files and modes. Never repair a rejected receipt by simply rehashing it.
+
 ## Modern build host
 
-Use upstream's Node 26 and pnpm toolchain, preserving the upstream lockfile. Pin exact toolchain builds and the macOS SDK before promoting this recipe to CI. Use a disposable checkout:
+Use upstream's Node 26.12.1 and pnpm 12.15.0 toolchain, preserving the upstream lockfile. Pin exact toolchain builds and the macOS SDK before promoting this recipe to CI. Use a disposable checkout:
 
 ```sh
 EXPORT=/absolute/path/to/hermes-desktop-catalina
@@ -12,10 +25,12 @@ git clone https://github.com/NousResearch/hermes-agent.git upstream
 cd upstream
 git checkout --detach 8fc0374447313e276f6b9a2764bfc750190c966a
 test "$(git rev-parse 'v0.23.4^{}')" = "$(git rev-parse HEAD)"
+python3 -I -B "$EXPORT/scripts/preflight.py" --upstream "$PWD"
 git apply --check "$EXPORT/patches/0001-defer-build-only-msix-module.patch"
 git apply "$EXPORT/patches/0001-defer-build-only-msix-module.patch"
 pnpm install --frozen-lockfile
 pnpm --dir apps/desktop run build
+python3 -I -B "$EXPORT/scripts/preflight.py" --desktop-only --prepared-desktop "$PWD/apps/desktop"
 ```
 
 This is the upstream **Desktop** entry point, not `build:webapp`. Use a modern macOS x64 builder or independently verified x64 native inputs for a Catalina candidate; never transfer an arm64-only native tree. The build command above has not been exercised in this export. Before accepting its output, validate the receipt (`product: desktop`), Electron 32 APIs and Chromium 128 syntax/CSS, and every x64 native module/helper against macOS 10.15. Confirm the preloads, JS, and native tree came from the same build. A completed Desktop build, signing, and a clean-host package remain later milestones.

@@ -17,3 +17,7 @@
 - Native package imports passed under host Node 20.20.1. Electron-side PTY spawn, native-helper execution, and permission handling were not verified.
 
 No raw logs, response payloads, environment captures, command-line dumps, profile state, or personal identifiers are included. Real GUI, full Desktop build, backend, signing, and distribution tests are pending.
+
+## Sprint 001 follow-up
+
+The stricter launcher regression failed before the parser was wired in and passed after it. Independent review found that Git index flags could hide edits from the clean-checkout gate. Both targeted regressions failed before the fix and passed after the preflight began rejecting `assume-unchanged` and `skip-worktree` entries. The final Python suite passed 20 tests. The local preflight confirmed the upstream pin but rejected the installed Node and pnpm versions. Sentinel independently found that the original text gate accepted malformed and nested Webapp receipts; the replacement checks structure and inventories required files, but does not certify freshness. No real app or backend was launched.
