@@ -27,7 +27,7 @@
 </p>
 
 > [!IMPORTANT]
-> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This GitHub repository currently contains project documentation, not the complete tested source port, a standalone `.app`, or an installer. Reviewed compatibility source and Sprint 001 preflight changes are now available for review in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4). Genuine Desktop compilation, comprehensive feature validation and security review remain in progress.
+> **Experimental development project.** The native desktop prototype has launched and completed a basic AI conversation on an Intel Mac running Catalina. This GitHub repository currently contains project documentation, not the complete tested source port, a standalone `.app`, or an installer. Reviewed compatibility source and Sprint 001 preflight changes are now available for review in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4). The genuine Desktop build has since been compiled and exercised on Catalina with live AI responses and existing conversation history. Release packaging and security review remain outstanding.
 
 ## Overview
 
@@ -95,7 +95,7 @@ The feature set below is **inherited from Hermes Agent**, not a claim that each 
 
 | Desktop capability | Catalina status |
 |---|---|
-| Desktop UI and navigation | 🧪 Prototype smoke-tested with a Webapp-derived renderer; Desktop renderer parity pending |
+| Desktop UI and navigation | 🧪 Genuine Desktop renderer launched; comprehensive feature parity pending |
 | Model selection and provider connection | ✅ Tested with one configured provider |
 | Interactive AI conversation | ✅ Basic response confirmed |
 | Session history | ✅ Rendered |
@@ -131,7 +131,7 @@ ChatGPT assists with project strategy, documentation and repository review. Obsi
 - ✅ Shared Obsidian vault and private Git synchronisation established.
 - ✅ Sprint 001 reported 20 passing Python tests, launcher regression, patch applicability and syntax checks.
 - ✅ Source integration and build preflight submitted in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4).
-- 🧪 Genuine Desktop renderer compilation and offline Catalina GUI acceptance are the next milestones.
+- 🧪 Sprint 003 genuine Desktop compilation and live chat passed; Sprint 004 protected build compiled and verified locally. Sprint 005 packaging remains unverified.
 - ⚠️ Electron 32 end-of-support remains a blocker for general binary distribution.
 
 These are development-session results, not a certification of every feature in a standalone packaged application.
@@ -143,7 +143,7 @@ Official Nous Research Hermes source
                 |
                 +-- Linux build host (modern Node + pnpm)
                 |         |
-                |         +-- Upstream React/Vite Webapp renderer (prototype)
+                |         +-- Upstream React/Vite Desktop renderer
                 |         +-- Bundled Electron main / preload
                 |
                 +-- Catalina-compatible Electron runtime
@@ -190,6 +190,8 @@ hermes-desktop-catalina/
 | [Upstream GitHub](https://github.com/NousResearch/hermes-agent) | Canonical project and issue tracker |
 
 ## Contributing
+
+Current contribution priorities: Catalina-compatible native APIs and computer-use (CUA) feasibility, Electron runtime compatibility and security, Darwin dependency review, isolated startup tests, and reproducible testing on older Intel Macs. CUA is a proposed research milestone, not an implemented feature. Join the discussion in [PR #4](https://github.com/dominicscanlonai/hermes-desktop-catalina/pull/4) or [open an issue](https://github.com/dominicscanlonai/hermes-desktop-catalina/issues).
 
 Compatibility reports, reproducible crash reports, test cases, packaging improvements and narrowly scoped upstream changes are welcome. Please identify the exact Catalina build and Electron version, and **remove secrets and personal information from logs** before submitting them.
 
